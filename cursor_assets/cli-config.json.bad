@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Shell(ls)"
+    ],
+    "deny": []
+  },
+  "version": 1,
+  "editor": {
+    "vimMode": false
+  },
+  "hasChangedDefaultModel": false,
+  "privacyCache": {
+    "ghostMode": true,
+    "privacyMode": 2,
+    "updatedAt": 1772337598807
+  },
+  "authInfo": {
+    "email": "yfno1@msn.com",
+    "displayName": "Fan Yang",
+    "userId": 204492949,
+    "authId": "github|user_01JVEECDWCTR75QZ5FTCN0FQW4"
+  },
+  "network": {
+    "useHttp1ForAgent": false
+  },
+  "approvalMode": "auto",
+  "sandbox": {
+    "mode": "disabled",
+    "networkAccess": "user_config_with_defaults"
+  },
+  "attribution": {
+    "attributeCommitsToAgent": true,
+    "attributePRsToAgent": true
+  }
+}
