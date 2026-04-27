@@ -13,7 +13,7 @@ Use this workflow when the user wants to commit all changes, push, and handle re
 ### 1. Generate a good commit message
 
 - Run `git status` and `git diff` (or `git diff --staged` if you prefer to stage first) to see what changed.
-- Do a quick code review focusing on bugs and errors. If none, proceed. Otherwise stop
+- Do a quick code review focusing on bugs, errors, typos. If none, proceed. Otherwise stop
 - Write a short, imperative subject line (e.g. "Add auth to admin routes", "Fix DataFrame typing in query_log_visualization"). Optionally add a blank line and a brief body if the change needs explanation.
 - Do not use "-m" multiple times; use a single message (escape newlines in the shell if needed, or use a commit message file).
 
@@ -64,3 +64,4 @@ If `git push` fails (e.g. "Updates were rejected because the remote contains wor
 - Use the repository root as the working directory for all git commands.
 - For "good" commit messages: prefer present tense, imperative ("Add feature" not "Added feature"); keep the subject under about 72 characters; add a body only when it adds context.
 - Run the commit step with a longer timeout (e.g. 120000 ms) so pre-commit hooks can complete.
+- If the user did not explicitly specify which repo to use, derive the repo from the most recent conversation context with the user (including recent repo-specific questions). If more than one repo is still plausible, ask a brief clarifying question before running git commands.

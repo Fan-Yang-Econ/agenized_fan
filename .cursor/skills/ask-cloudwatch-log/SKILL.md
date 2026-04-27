@@ -1,6 +1,7 @@
 ---
 name: ask-cloudwatch-log
 description: Download and analyze AWS CloudWatch logs from a CloudWatch console link, then answer user questions grounded in the retrieved log content. Use when the user shares a CloudWatch Logs URL, asks to investigate logs, or asks follow-up questions about a specific log window.
+disable-model-invocation: true
 ---
 # Ask CloudWatch Log
 
@@ -53,24 +54,72 @@ The goal is to:
 Use these as templates (adjust placeholders):
 
 ```bash
-# Specific stream
-aws logs get-log-events \
-  --region <region> \
-  --log-group-name "<log-group>" \
-  --log-stream-name "<log-stream>" \
-  --start-time <start-ms> \
-  --end-time <end-ms> \
-  --output json
+# Specific stream (always use python3 for scripts)
+python3 - <<'PY'
+import subprocess, pathlib
+region = "<region>"
+log_group = "<log-group>"
+log_stream = "<log-stream>"
+start_ms = "<start-ms>"
+end_ms = "<end-ms>"
+out_path = pathlib.Path(".tmp/cloudwatch/stream.raw.json")
+out_path.parent.mkdir(parents=True, exist_ok=True)
+cmd = [
+  "aws", "logs", "get-log-events",
+  "--region", region,
+  "--log-group-name", log_group,
+  "--log-stream-name", log_stream,
+  "--start-time", str(start_ms),
+  "--end-time", str(end_ms),
+  "--output", "json",
+]
+res = subprocess.run(cmd, capture_output=True, text=True, check=True)
+out_path.write_text(res.stdout)
+print(out_path)
+PY
 ```
 
 ```bash
-# Group-wide search in a time window
-aws logs filter-log-events \
-  --region <region> \
-  --log-group-name "<log-group>" \
-  --start-time <start-ms> \
-  --end-time <end-ms> \
-  --output json
+# Group-wide search in a time window (always use python3 for scripts)
+python3 - <<'PY'
+import subprocess, pathlib
+region = "<region>"
+log_group = "<log-group>"
+start_ms = "<start-ms>"
+end_ms = "<end-ms>"
+out_path = pathlib.Path(".tmp/cloudwatch/group.raw.json")
+out_path.parent.mkdir(parents=True, exist_ok=True)
+cmd = [
+  "aws", "logs", "filter-log-events",
+  "--region", region,
+  "--log-group-name", log_group,
+  "--start-time", str(start_ms),
+  "--end-time", str(end_ms),
+  "--output", "json",
+]
+res = subprocess.run(cmd, capture_output=True, text=True, check=True)
+out_path.write_text(res.stdout)
+print(out_path)
+PY
+```
+
+```bash
+# Normalize raw JSON into timeline text (python3)
+python3 - <<'PY'
+import json, pathlib
+from datetime import datetime, UTC
+raw_path = pathlib.Path(".tmp/cloudwatch/group.raw.json")
+timeline_path = raw_path.with_suffix(".timeline.txt")
+payload = json.loads(raw_path.read_text())
+lines = []
+for e in payload.get("events", []):
+  ts = datetime.fromtimestamp(e["timestamp"] / 1000, UTC).isoformat()
+  stream = e.get("logStreamName", "")
+  msg = (e.get("message") or "").rstrip("\n")
+  lines.append(f"{ts}\t{stream}\t{msg}")
+timeline_path.write_text("\n".join(lines))
+print(timeline_path)
+PY
 ```
 
 ## URL parsing guidance
