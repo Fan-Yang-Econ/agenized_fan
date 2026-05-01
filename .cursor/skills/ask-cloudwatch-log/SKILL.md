@@ -62,7 +62,7 @@ log_group = "<log-group>"
 log_stream = "<log-stream>"
 start_ms = "<start-ms>"
 end_ms = "<end-ms>"
-out_path = pathlib.Path(".tmp/cloudwatch/stream.raw.json")
+out_path = pathlib.Path("/tmp/cloudwatch/stream.raw.json")
 out_path.parent.mkdir(parents=True, exist_ok=True)
 cmd = [
   "aws", "logs", "get-log-events",

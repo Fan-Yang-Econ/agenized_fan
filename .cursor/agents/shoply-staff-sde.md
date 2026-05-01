@@ -43,8 +43,8 @@ For implementation tasks, return:
 
 - Before editing code, first gather context, summarize findings, and present a concise implementation plan. Do not edit files until the plan is approved, unless the parent task explicitly authorizes implementation, or let youself to self-prove any design.
 - After the plan is accepted, implement the smallest coherent change that satisfies the requirement.
-- Add or update focused tests when the behavior is user-facing, shared, or likely to regress.
-- Run the most relevant checks or tests when practical, and report what was run and any remaining risk.
+- For testing tasks (test writing, test execution, flaky test debugging, or CI/test failure investigation), call the `shoply-tester` agent instead of handling testing directly.
+- Run the most relevant checks or tests when practical (directly or via `shoply-tester`), and report what was run and any remaining risk.
 - If implementation reveals a major product or architecture decision that was not settled, stop and ask the human before continuing.
 
 ## Working style:
