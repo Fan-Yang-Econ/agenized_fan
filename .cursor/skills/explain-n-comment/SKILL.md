@@ -21,6 +21,7 @@ When this skill applies, **edit the file** and add comments where they help futu
 ## Workflow
 
 1. **Scope** — Use the user’s selection, `@path:lines`, or the code they pasted. If the range is ambiguous, include one line of context above/below.
+   - **Function signature only** — If the user’s highlight covers **only** a function’s signature (name, parameters, return type, or the opening line of a function without the body), treat that as a request for **function-level** documentation: add a **docstring** or a short **block comment immediately above the function** (language-appropriate: e.g. JSDoc/TSDoc for TS/JS, docstrings for Python). Do not scatter line-by-line comments inside the body unless the user selected the body too.
 2. **Read context** — Open the file (or enough surrounding lines) so comments match naming, style, and language conventions.
 3. **Comment in file** — Write **laymen, easy-to-understnad, explanatory** comments (length is fine if clarity needs it):
    - **Business “why” first** — Who benefits, what problem is solved, what would break or degrade without this logic (customers, agents, ops, compliance, etc., in plain terms).
@@ -42,5 +43,6 @@ When this skill applies, **edit the file** and add comments where they help futu
 ## Output checklist
 
 - [ ] Comments in the correct file(s) are **clear and explanatory** (product context first; technical detail only when requested).
-- [ ] Comments follow local style (`//`, `#`, etc.).
+- [ ] If the user highlighted **only a function signature**, a **function-level docstring or block comment** was added (not inline body commentary).
+- [ ] Comments follow local style (`//`, `#`, docstrings, etc.).
 - [ ] No unrelated refactors; comments only unless the user asked for more.

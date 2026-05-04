@@ -1,6 +1,6 @@
 ---
 name: ask-cloudwatch-log
-description: Download and analyze AWS CloudWatch logs from a CloudWatch console link, then answer user questions grounded in the retrieved log content. Use when the user shares a CloudWatch Logs URL, asks to investigate logs, or asks follow-up questions about a specific log window.
+description: Download and analyze AWS CloudWatch logs from a CloudWatch console link, then answer user questions grounded in the retrieved log content. Use when the user shares a CloudWatch Logs URL, asks to investigate logs, or asks follow-up questions about a specific log window. When logs show Playwright or unit test failures, delegate to the shoply-tester agent for artifact retrieval (e.g. S3), deeper debugging, and validation.
 disable-model-invocation: true
 ---
 # Ask CloudWatch Log
@@ -48,6 +48,15 @@ The goal is to:
 5. **Handle follow-up questions**
    - Reuse the saved local artifacts first.
    - Only re-query CloudWatch if the user asks for a different time window/group/stream.
+
+6. **Test failures (Playwright / unit tests) — hand off to `shoply-tester`**
+   - After retrieving and skimming logs, if the failure is **caused by or centered on** a **Playwright (E2E) test failure** or a **unit test failure** (Jest/pytest, CI test step exit non-zero, `playwright test`, `npm test`, spec file paths, assertion errors, timeouts, screenshot/video upload hooks, etc.), **do not stop at log summary alone**.
+   - **Invoke the `shoply-tester` subagent** (Task tool, `subagent_type`: `shoply-tester`) with:
+     - Paths to the saved raw JSON and timeline files you created,
+     - Relevant quoted log excerpts (suite name, spec path, retry count, S3 URIs, `E2E_RUN_ID`, bucket/prefix hints, CodeBuild/build id if present),
+     - AWS region and any **S3 artifact** URLs or key prefixes mentioned in the logs.
+   - Ask that agent to: **review the log context**, **pull test artifacts from S3** when the logs reference them (videos, traces, reports), **reproduce or narrow the failure in the repo**, and **validate any proposed fix** (re-run targeted tests, align with existing Playwright/Jest patterns in Shoply/Shopily repos).
+   - You keep ownership of the initial CloudWatch pull and URL parsing; `shoply-tester` owns deep test debugging, artifact retrieval, and validation loops. Synthesize a short answer for the user that points to both the log evidence and the tester’s conclusions.
 
 ## Command patterns
 
@@ -152,3 +161,4 @@ Keep answers concise, but always evidence-backed.
 - If AWS auth fails (expired SSO/session, missing creds, AccessDenied), report the exact error and required user action.
 - If log volume is too large, narrow by time range or filter pattern before analysis.
 - Never invent log lines or timestamps.
+- If the failure is a **Playwright or unit test** failure and you cannot invoke subagents, tell the user to run **`shoply-tester`** manually with the same log paths and S3 hints, or paste the log excerpts and artifact URIs.

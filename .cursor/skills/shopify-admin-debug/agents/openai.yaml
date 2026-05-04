@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shopify Admin Debug"
+  short_description: "Debug Shopify admin app issues."
+  default_prompt: "Debug a Shoply Shopify admin embedded app error using browser state, Chrome cookies, direct API reproduction, and frontend/backend route analysis."

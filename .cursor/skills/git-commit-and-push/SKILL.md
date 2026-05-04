@@ -17,6 +17,8 @@ Use this workflow when the user wants to commit all changes, push, and handle re
 - Write a short, imperative subject line (e.g. "Add auth to admin routes", "Fix DataFrame typing in query_log_visualization"). Optionally add a blank line and a brief body if the change needs explanation.
 - Do not use "-m" multiple times; use a single message (escape newlines in the shell if needed, or use a commit message file).
 
+### Do a quick check on all untracked py / ts / tsx / js / jsx files. If the tracked files refer or mention them, then git add them. Otherwise leave those untracked files untracked.
+
 ### 2. Commit all changes (do not add any untracked/unindex files)
 
 ```bash

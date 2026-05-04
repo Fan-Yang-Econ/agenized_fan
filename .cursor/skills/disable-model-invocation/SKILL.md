@@ -1,6 +1,6 @@
 ---
 name: disable-model-invocation
-description: Ensure skill files in `/Users/fanyang/shopily/agenized_fan/.cursor/skills` include `disable-model-invocation: true`. Use when creating, updating, or auditing skills and when the user wants model invocation disabled by default with explicit exclusions.
+description: "Ensure skill files under agenized_fan/.cursor/skills set the frontmatter flag disable-model-invocation to true. Use when creating, updating, or auditing skills, or when the user wants model invocation disabled by default with explicit exclusions."
 disable-model-invocation: true
 ---
 

@@ -43,7 +43,7 @@ In development,
 
 - **Python interpreter**: `~/virtual_shoply_py/bin/python_with_PYTHONPATH` — already has `shopilycommon`, `PyHelpers`, `shopilyapi` on `PYTHONPATH`. Created/updated by `shoply-backend-reuse (reuse existing virtual)` or `shoply-backend` (creating a new virtual env). Always prefer it over `python3` when running anything that imports Shoply code.
 - **Backend dev**: `SHOPILY_ENV=prod` for local dev that should still log to prod-style stores; otherwise some dev stores skip session/QA logging. `STORES_TO_LOAD=<csv>` keeps backend startup fast.
-- **Frontend dev parity**: `shoply_chat_rn/scripts/run-all-dev.sh --store-key=…` runs backend + chat_core + RN web in one terminal.
+- **Frontend dev parity**: `shoply_chat_rn/scripts/setup_local_dev_env.sh --store-key=…` runs backend + chat_core + RN web in one terminal.
 - **JS build coupling**: The chat widget is the *single source of truth* for chat/search UI. Edits live in `shopilyjs_chat_core/src/` and reach consumer repos via the hot-rebuild watchers — do not edit the copies in `shopping_assistant_by_shopily/extensions/.../assets/` or `shopping_assistant_by_shopily/app/shopilyjs_chat_core/`.
 - **Test commands**:
   - `shopilyapi`: `~/virtual_shoply_py/bin/python_with_PYTHONPATH -m pytest test/ -x` (also wrapped by `/shoply-backend-run-unit-tests`).
