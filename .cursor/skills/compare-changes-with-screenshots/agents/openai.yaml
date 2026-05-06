@@ -1,0 +1,6 @@
+interface:
+  display_name: Compare Changes with Screenshots
+  short_description: Before/after screenshots for code diffs.
+  default_prompt: Compare this repo change visually with before and after screenshots.
+policy:
+  allow_implicit_invocation: false
