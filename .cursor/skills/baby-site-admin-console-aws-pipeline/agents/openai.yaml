@@ -1,0 +1,4 @@
+interface:
+  display_name: "AWS Pipeline Monitor"
+  short_description: "Monitor and approve Shoply pipeline"
+  default_prompt: "Use $baby-site-admin-console-aws-pipeline to monitor the Shoply admin CodePipeline, debug failures, and approve deployment after a successful build."
